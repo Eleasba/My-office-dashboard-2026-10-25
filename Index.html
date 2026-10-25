@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NGO Office Dashboard</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f1f5f9;color:#1e293b}
+header{background:#123b65;color:white;padding:22px 18px}
+header h1{margin:0 0 7px;font-size:23px}
+header p{margin:0;color:#dbeafe;font-size:13px}
+nav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;background:white}
+nav a{text-align:center;text-decoration:none;color:#164e8a;background:#eaf2ff;padding:13px 3px;border-radius:9px;font-size:13px;font-weight:bold}
+main{padding:15px;max-width:900px;margin:auto}
+h2{font-size:20px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card,.panel{background:white;border-radius:12px;padding:16px;box-shadow:0 3px 12px #0000000b}
+.card{border-left:4px solid #2563eb}
+.card .ico{font-size:26px}
+.card h3{font-size:16px;margin:10px 0 5px}
+.card p{font-size:12px;color:#64748b}
+.card a{color:#2563eb;font-size:13px}
+section{margin-bottom:28px;scroll-margin-top:10px}
+.panel{margin-top:12px}
+label{display:block;font-size:13px;font-weight:bold;margin-top:12px}
+input,select{width:100%;padding:12px;margin-top:6px;border:1px solid #cbd5e1;border-radius:7px;font-size:15px;background:white}
+button{background:#1764c0;color:white;border:0;border-radius:7px;padding:12px 16px;margin-top:14px;font-size:14px;cursor:pointer}
+.secondary{background:#64748b}
+.item{padding:12px 0;border-bottom:1px solid #e2e8f0;font-size:13px;overflow-wrap:anywhere}
+.stat{font-size:23px;font-weight:bold;color:#1764c0}
+.note{font-size:12px;line-height:1.6;color:#64748b}
+footer{text-align:center;padding:20px;color:#64748b;font-size:12px}
+@media(min-width:600px){nav{grid-template-columns:repeat(6,1fr)}.cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+
+<header>
+<h1>🏢 NGO Office Dashboard</h1>
+<p>ক্ষুদ্রঋণ ও সমিতি ব্যবস্থাপনা | Management System</p>
+</header>
+
+<nav>
+<a href="#dashboard">🏠 Dashboard</a>
+<a href="#employee">👨‍💼 Employee</a>
+<a href="#group">👥 Group</a>
+<a href="#member">🧑 Member</a>
+<a href="#deposit">💰 Deposit</a>
+<a href="#loans">🏦 Loans</a>
+<a href="#report">📊 Report</a>
+</nav>
+
+<main>
+<section id="dashboard">
+<h2>Dashboard / প্রধান প্যানেল</h2>
+<p>স্বাগতম! আপনার অফিসের কার্যক্রম এখানে পরিচালনা করুন।</p>
+<div class="cards">
+<div class="card"><div class="ico">👨‍💼</div><h3>Employee</h3><p>কর্মচারী ব্যবস্থাপনা</p><div class="stat" id="employeeCount">0</div><a href="#employee">Open / খুলুন →</a></div>
+<div class="card"><div class="ico">👥</div><h3>Group</h3><p>দল ব্যবস্থাপনা</p><div class="stat" id="groupCount">0</div><a href="#group">Open / খুলুন →</a></div>
+<div class="card"><div class="ico">🧑</div><h3>Member</h3><p>সদস্য ব্যবস্থাপনা</p><div class="stat" id="memberCount">0</div><a href="#member">Open / খুলুন →</a></div>
+<div class="card"><div class="ico">💰</div><h3>Deposit</h3><p>মোট জমা (টাকা)</p><div class="stat" id="depositTotal">0</div><a href="#deposit">Open / খুলুন →</a></div>
+<div class="card"><div class="ico">🏦</div><h3>Loans</h3><p>মোট ঋণ বিতরণ (টাকা)</p><div class="stat" id="loanTotal">0</div><a href="#loans">Open / খুলুন →</a></div>
+<div class="card"><div class="ico">📊</div><h3>Report</h3><p>হিসাব ও লেনদেন</p><a href="#report">View Report / রিপোর্ট →</a></div>
+</div>
+</section>
+
+<section id="employee">
+<h2>👨‍💼 Employee / কর্মচারী</h2>
+<div class="panel">
+<form data-kind="employee">
+<label>Employee Name / কর্মচারীর নাম</label><input name="name" required>
+<label>Employee ID / কর্মচারী আইডি</label><input name="code" required>
+<label>Designation / পদবি</label><input name="detail" required>
+<label>Mobile / মোবাইল</label><input name="phone" type="tel">
+<button>Save Employee / সংরক্ষণ</button>
+</form>
+<div id="employeeList"></div>
+</div>
+</section>
+
+<section id="group">
+<h2>👥 Group / দল</h2>
+<div class="panel">
+<form data-kind="group">
+<label>Group Name / দলের নাম</label><input name="name" required>
+<label>Group ID / দলের আইডি</label><input name="code" required>
+<label>Branch / শাখা</label><input name="detail">
+<button>Save Group / দল সংরক্ষণ</button>
+</form>
+<div id="groupList"></div>
+</div>
+</section>
+
+<section id="member">
+<h2>🧑 Member / সদস্য</h2>
+<div class="panel">
+<form data-kind="member">
+<label>Member Name / সদস্যের নাম</label><input name="name" required>
+<label>Member ID / সদস্য আইডি</label><input name="code" required>
+<label>Group Name / দলের নাম</label><input name="detail">
+<label>Mobile / মোবাইল</label><input name="phone" type="tel">
+<button>Save Member / সদস্য সংরক্ষণ</button>
+</form>
+<div id="memberList"></div>
+</div>
+</section>
+
+<section id="deposit">
+<h2>💰 Deposit / সঞ্চয় জমা</h2>
+<div class="panel">
+<form data-kind="deposit">
+<label>Member ID / সদস্য আইডি</label><input name="code" required>
+<label>Amount (BDT) / জমার পরিমাণ</label><input name="amount" type="number" min="0.01" step="0.01" required>
+<label>Date / তারিখ</label><input name="date" type="date" required>
+<button>Save Deposit / জমা সংরক্ষণ</button>
+</form>
+<div id="depositList"></div>
+</div>
+</section>
+
+<section id="loans">
+<h2>🏦 Loans / ঋণ</h2>
+<div class="panel">
+<form data-kind="loans">
+<label>Member ID / সদস্য আইডি</label><input name="code" required>
+<label>Loan Amount (BDT) / ঋণের পরিমাণ</label><input name="amount" type="number" min="0.01" step="0.01" required>
+<label>Loan Term (Months) / মেয়াদ (মাস)</label><input name="detail" type="number" min="1" required>
+<label>Date / তারিখ</label><input name="date" type="date" required>
+<button>Save Loan / ঋণের তথ্য সংরক্ষণ</button>
+</form>
+<div id="loansList"></div>
+</div>
+</section>
+
+<section id="report">
+<h2>📊 Report / রিপোর্ট</h2>
+<div class="panel">
+<p>মোট কর্মচারী: <strong id="rEmployee">0</strong></p>
+<p>মোট দল: <strong id="rGroup">0</strong></p>
+<p>মোট সদস্য: <strong id="rMember">0</strong></p>
+<p>মোট জমা: ৳<strong id="rDeposit">0</strong></p>
+<p>মোট ঋণ বিতরণ: ৳<strong id="rLoans">0</strong></p>
+<button onclick="showReport()">Refresh Report / রিপোর্ট আপডেট</button>
+<button class="secondary" onclick="exportReport()">Download CSV / রিপোর্ট ডাউনলোড</button>
+<p class="note">এটি প্রাথমিক ডেমো রিপোর্ট। ঋণের বকেয়া, কিস্তি আদায়, সুদ ও হিসাবের চূড়ান্ত রিপোর্ট পরে যুক্ত করা যাবে।</p>
+</div>
+</section>
+</main>
+
+<footer>© 2026 NGO Office Management System</footer>
+
+<script>
+const kinds = ["employee","group","member","deposit","loans"];
+const labels = {
+ employee:"Employee / কর্মচারী",
+ group:"Group / দল",
+ member:"Member / সদস্য",
+ deposit:"Deposit / জমা",
+ loans:"Loans / ঋণ"
+};
+
+function getData(kind){
+ try{return JSON.parse(localStorage.getItem("ngo_"+kind)||"[]")}
+ catch(e){return []}
+}
+function setData(kind,data){
+ localStorage.setItem("ngo_"+kind,JSON.stringify(data));
+}
+function money(value){
+ return Number(value||0).toLocaleString("en-BD",{maximumFractionDigits:2});
+}
+function render(kind){
+ const list=document.getElementById(kind+"List");
+ const data=getData(kind);
+ list.innerHTML=data.length?"<h3>Saved Records / সংরক্ষিত তথ্য</h3>":"<p class='note'>এখনো কোনো তথ্য নেই / No records yet.</p>";
+ data.slice().reverse().forEach(item=>{
+  const div=document.createElement("div");
+  div.className="item";
+  div.textContent=
+   (item.name||labels[kind])+
+   (item.code?" | ID: "+item.code:"")+
+   (item.detail?" | "+(kind==="loans"?"Months: ":"")+item.detail:"")+
+   (item.phone?" | "+item.phone:"")+
+   (item.amount?" | ৳"+money(item.amount):"")+
+   (item.date?" | "+item.date:"");
+  list.appendChild(div);
+ });
+}
+function showReport(){
+ const totals={};
+ kinds.forEach(kind=>{
+  const data=getData(kind);
+  totals[kind]=data;
+ });
+ document.getElementById("employeeCount").textContent=totals.employee.length;
+ document.getElementById("groupCount").textContent=totals.group.length;
+ document.getElementById("memberCount").textContent=totals.member.length;
+ const deposit=totals.deposit.reduce((s,x)=>s+Number(x.amount||0),0);
+ const loans=totals.loans.reduce((s,x)=>s+Number(x.amount||0),0);
+ document.getElementById("depositTotal").textContent=money(deposit);
+ document.getElementById("loanTotal").textContent=money(loans);
+ document.getElementById("rEmployee").textContent=totals.employee.length;
+ document.getElementById("rGroup").textContent=totals.group.length;
+ document.getElementById("rMember").textContent=totals.member.length;
+ document.getElementById("rDeposit").textContent=money(deposit);
+ document.getElementById("rLoans").textContent=money(loans);
+ kinds.forEach(render);
+}
+document.querySelectorAll("form[data-kind]").forEach(form=>{
+ form.addEventListener("submit",function(event){
+  event.preventDefault();
+  const kind=form.dataset.kind;
+  const item=Object.fromEntries(new FormData(form).entries());
+  const data=getData(kind);
+  if(data.some(x=>x.code && item.code && x.code.trim()===item.code.trim())){
+   alert("এই ID আগে ব্যবহার করা হয়েছে। অন্য ID দিন।");
+   return;
+  }
+  data.push(item);
+  setData(kind,data);
+  form.reset();
+  showReport();
+  alert("তথ্য এই ডিভাইসে সংরক্ষণ করা হয়েছে।");
+ });
+});
+function exportReport(){
+ let rows=[["Category","Name","ID","Details","Amount BDT","Date"]];
+ kinds.forEach(kind=>getData(kind).forEach(x=>{
+  rows.push([kind,x.name||"",x.code||"",x.detail||"",x.amount||"",x.date||""]);
+ }));
+ const csv="\uFEFF"+rows.map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n");
+ const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;a.download="NGO_Report.csv";a.click();
+ URL.revokeObjectURL(url);
+}
+showReport();
+</script>
+</body>
+</html>
